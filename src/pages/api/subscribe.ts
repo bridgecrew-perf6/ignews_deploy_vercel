@@ -21,15 +21,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!customerId) {
       const stripeCustomer = await stripe.customers.create({
-        email: session.user.email,
+        email: session.user.email
         // metadata
       });
 
       await fauna.query(
         q.Update(q.Ref(q.Collection('users'), user.ref.id), {
           data: {
-            stripe_customer_id: stripeCustomer.id,
-          },
+            stripe_customer_id: stripeCustomer.id
+          }
         })
       );
 
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       mode: 'subscription',
       allow_promotion_codes: true,
       success_url: process.env.STRIPE_SUCCESS_URL,
-      cancel_url: process.env.STRIPE_CANCEL_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL
     });
 
     return res.status(200).json({ sessionId: stripeCheckoutSession.id });
